@@ -1,0 +1,88 @@
+<!-- this is all chatgpt generated -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timezone Info</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #121212;
+        color: #fff;
+    }
+    #timezone-info {
+        margin: 20px auto;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #555;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #1f1f1f;
+    }
+    button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        z-index: 1;
+    }
+</style>
+</head>
+<body>
+<div id="timezone-info">
+    <h1>Your Timezone Information</h1>
+    <p><strong>Current Time:</strong> <span id="current-time"></span></p>
+    <p><strong>Timezone:</strong> <span id="timezone-name"></span></p>
+    <p><strong>Timezone Offset:</strong> <span id="timezone-offset"></span></p>
+    <button id="copy-btn">Copy Timezone Info</button>
+</div>
+
+<script>
+    var currentTime = new Date();
+    var timezoneName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    var timezoneOffset = -(currentTime.getTimezoneOffset() / 60); 
+
+    var hours = currentTime.getHours().toString().padStart(2, '0');
+    var minutes = currentTime.getMinutes().toString().padStart(2, '0');
+    var seconds = currentTime.getSeconds().toString().padStart(2, '0');
+    var formattedTime = hours + ':' + minutes + ':' + seconds;
+
+    document.getElementById('current-time').textContent = formattedTime;
+    document.getElementById('timezone-name').textContent = timezoneName;
+    document.getElementById('timezone-offset').textContent = 'UTC' + (timezoneOffset >= 0 ? '+' : '') + timezoneOffset;
+
+    document.getElementById('copy-btn').addEventListener('click', function() {
+        var timezoneInfo = timezoneName;
+        navigator.clipboard.writeText(timezoneInfo).then(function() {
+            var toast = document.createElement("div");
+            toast.textContent = 'Timezone information copied to clipboard!';
+            toast.style.cssText = "position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: #4CAF50; color: white; padding: 16px; border-radius: 8px; z-index: 1;";
+            document.body.appendChild(toast);
+            setTimeout(function() {
+                toast.remove();
+            }, 3000);
+        }, function(err) {
+            console.error('Could not copy timezone information: ', err);
+        });
+    });
+</script>
+</body>
+</html>
